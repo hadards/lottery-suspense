@@ -1,0 +1,66 @@
+<main class="min-h-screen bg-slate-900 text-slate-100 flex flex-col items-center justify-center p-4 font-sans" dir="rtl">
+  <div class="w-full max-w-4xl mx-auto bg-slate-800/50 rounded-2xl shadow-2xl p-6 md:p-8 border border-slate-700">
+
+    <!-- Header -->
+    <header class="text-center mb-6">
+      <h1 class="text-4xl md:text-5xl font-bold text-amber-400 tracking-tight">בינגו יום הולדת 11 לארז!</h1>
+      <p class="text-slate-400 mt-2 text-lg">כל לחיצה מגרילה מספר חדש</p>
+    </header>
+
+    <!-- Main Display -->
+    <div class="relative flex items-center justify-center h-48 md:h-64 bg-slate-900/70 rounded-xl mb-6 overflow-hidden border-2 border-slate-700 shadow-inner">
+      <div class="absolute inset-0 bg-grid-slate-700/50 [mask-image:linear-gradient(0deg,#fff,rgba(255,255,255,0))]"></div>
+      
+      @if (isDrawing()) {
+        <div class="font-mono font-bold text-7xl md:text-9xl text-cyan-400 animate-pulse transition-opacity duration-150">
+          {{ animatingNumber() }}
+        </div>
+      } @else if (lastDrawnNumber(); as lastNum) {
+        <div class="font-mono font-bold text-7xl md:text-9xl text-amber-400 transition-all duration-500 scale-100 opacity-100">
+          {{ lastNum }}
+        </div>
+      } @else {
+        <div class="text-3xl md:text-5xl font-semibold text-slate-500 text-center px-4">
+          @if (allNumbersDrawn()) {
+            <span>כל המספרים הוגרלו!</span>
+          } @else {
+            <span>לחץ על הכפתור כדי להתחיל</span>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Controls -->
+    <div class="flex flex-col sm:flex-row gap-4 mb-8 justify-center">
+      <button 
+        (click)="drawNumber()" 
+        [disabled]="isDrawing() || allNumbersDrawn()"
+        class="w-full sm:w-auto px-10 py-4 text-xl font-semibold text-slate-900 bg-amber-400 rounded-lg shadow-lg hover:bg-amber-300 focus:outline-none focus:ring-4 focus:ring-amber-500 focus:ring-opacity-50 transition-all duration-300 disabled:bg-slate-600 disabled:text-slate-400 disabled:cursor-not-allowed transform hover:scale-105 disabled:scale-100">
+        @if (isDrawing()) {
+          <span>מגריל...</span>
+        } @else if (allNumbersDrawn()) {
+          <span>ההגרלה הסתיימה</span>
+        } @else {
+          <span>הגרל מספר</span>
+        }
+      </button>
+      <button 
+        (click)="reset()"
+        [disabled]="isDrawing()"
+        class="w-full sm:w-auto px-8 py-4 text-lg font-medium text-slate-300 bg-transparent border-2 border-slate-600 rounded-lg hover:bg-slate-700 hover:text-white focus:outline-none focus:ring-4 focus:ring-slate-500 focus:ring-opacity-50 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+        איפוס
+      </button>
+    </div>
+
+    <!-- Numbers Grid -->
+    <div class="grid grid-cols-10 md:grid-cols-15 gap-2 md:gap-2.5 max-w-3xl mx-auto p-4 bg-slate-900/50 rounded-lg border border-slate-700">
+      @for (num of numbers(); track num) {
+        <div 
+          class="flex items-center justify-center h-10 w-10 text-lg font-bold rounded-full transition-all duration-300 ease-in-out"
+          [class]="isDrawn(num) ? 'bg-amber-400 text-slate-900 scale-110 shadow-lg shadow-amber-500/20' : 'bg-slate-700 text-slate-300'">
+          {{ num }}
+        </div>
+      }
+    </div>
+  </div>
+</main>

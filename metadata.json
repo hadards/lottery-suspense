@@ -1,0 +1,5 @@
+{
+  "name": "Lottery Suspense",
+  "description": "A lottery number drawing app that builds suspense with animations. Draw numbers from 1 to 75 one by one.",
+  "requestFramePermissions": []
+}
